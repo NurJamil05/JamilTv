@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JAMIL TV - Ultimate Premium</title>
+    <!-- DPlayer CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -14,97 +15,20 @@
             padding: 15px;
             min-height: 100vh;
         }
-        
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+        .container { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+        h2 { font-size: 2rem; margin-top: 10px; background: linear-gradient(45deg, #ff007f, #00f0ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 15px rgba(255,0,127,0.2); font-weight: 800; text-align: center; }
 
-        h2 {
-            font-size: 2rem;
-            margin-top: 10px;
-            background: linear-gradient(45deg, #ff007f, #00f0ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 15px rgba(255,0,127,0.2);
-            font-weight: 800;
-            text-align: center;
-        }
+        /* Premium Menu */
+        .menu-container { display: flex; justify-content: center; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.03); padding: 12px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .menu-label { font-size: 0.95rem; color: #00f0ff; font-weight: bold; }
+        .category-select { background: #11091f; color: #fff; border: 2px solid #ff007f; padding: 8px 15px; font-size: 0.95rem; border-radius: 8px; cursor: pointer; outline: none; box-shadow: 0 0 10px rgba(255, 0, 127, 0.2); }
 
-        /* Premium Menu Styling */
-        .menu-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .menu-label {
-            font-size: 0.95rem;
-            color: #00f0ff;
-            font-weight: bold;
-        }
-        .category-select {
-            background: #11091f;
-            color: #fff;
-            border: 2px solid #ff007f;
-            padding: 8px 15px;
-            font-size: 0.95rem;
-            border-radius: 8px;
-            cursor: pointer;
-            outline: none;
-            box-shadow: 0 0 10px rgba(255, 0, 127, 0.2);
-        }
-
-        /* Customizing Player View */
-        .player-wrapper {
-            width: 100%;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9), 0 0 25px rgba(255, 0, 127, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.05);
-        }
+        .player-wrapper { width: 100%; border-radius: 15px; overflow: hidden; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9), 0 0 25px rgba(255, 0, 127, 0.2); border: 2px solid rgba(255, 255, 255, 0.05); }
         
-        /* DPlayer Custom Theme Overrides to Pink/Cyan Neon */
-        .dplayer-setting-setting { background: #ff007f !important; }
-        .dplayer-thumb { background: #00f0ff !important; }
-        
-        .btn-container { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 10px; 
-            justify-content: center; 
-        }
-        .btn { 
-            background: rgba(255, 255, 255, 0.02);
-            color: #fff; 
-            border: 1px solid rgba(0, 240, 255, 0.2); 
-            padding: 12px 22px; 
-            font-weight: bold; 
-            font-size: 0.95rem;
-            border-radius: 8px; 
-            cursor: pointer; 
-            transition: all 0.3s ease;
-        }
-        .btn:hover { 
-            background: #ff007f; 
-            color: #fff;
-            box-shadow: 0 0 15px #ff007f;
-            border-color: #ff007f;
-            transform: translateY(-2px);
-        }
-        .btn.active {
-            background: linear-gradient(45deg, #ff007f, #00f0ff);
-            color: #000;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
-            border: none;
-        }
+        .btn-container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+        .btn { background: rgba(255, 255, 255, 0.02); color: #fff; border: 1px solid rgba(0, 240, 255, 0.2); padding: 12px 22px; font-weight: bold; font-size: 0.95rem; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; }
+        .btn:hover { background: #ff007f; color: #fff; box-shadow: 0 0 15px #ff007f; border-color: #ff007f; transform: translateY(-2px); }
+        .btn.active { background: linear-gradient(45deg, #ff007f, #00f0ff); color: #000; box-shadow: 0 0 20px rgba(0, 240, 255, 0.5); border: none; }
     </style>
 </head>
 <body>
@@ -113,11 +37,11 @@
         <h2>📺 JAMIL TV - ULTIMATE</h2>
 
         <div class="menu-container">
-            <span class="menu-label">ক্যাটাগরি:</span>
+            <span class="menu-label">Category:</span>
             <select id="categoryMenu" class="category-select" onchange="filterCategories()">
-                <option value="all">সব চ্যানেল (All)</option>
+                <option value="all">All Channels</option>
                 <option value="fifa">FIFA Dedicated</option>
-                <option value="cloud">Cloud & Redforce TV</option>
+                <option value="cloud">Cloud & Redforce</option>
             </select>
         </div>
 
@@ -145,26 +69,15 @@
         let dp;
         const btnContainer = document.getElementById('buttons');
 
-        // DPlayer Initialization
         function initPlayer(streamUrl) {
             if (dp) { dp.destroy(); }
-            
             dp = new DPlayer({
                 container: document.getElementById('dplayer'),
                 live: true,
-                theme: '#ff007f', // Hot Pink theme color
-                loop: false,
-                screenshot: false,
-                hotkey: true, // Allows arrow keys for 10s skip on desktop
-                video: {
-                    url: streamUrl,
-                    type: 'hls'
-                },
-                // Custom Controls configuration inside DPlayer
+                theme: '#ff007f',
+                video: { url: streamUrl, type: 'hls' },
                 playbackSpeed: [0.5, 1, 1.5, 2],
             });
-            
-            // Auto Play
             dp.play();
         }
 
@@ -181,29 +94,19 @@
                     initPlayer(ch.url); 
                 };
                 btnContainer.appendChild(btn);
-                
-                if(idx === 0) { 
-                    btn.classList.add('active');
-                    initPlayer(ch.url); 
-                }
+                if(idx === 0) { btn.classList.add('active'); initPlayer(ch.url); }
             });
         }
 
         function filterCategories() {
             const selectedCategory = document.getElementById('categoryMenu').value;
             const buttons = document.querySelectorAll('.btn');
-            
             buttons.forEach(btn => {
                 const btnCategory = btn.getAttribute('data-category');
-                if (selectedCategory === 'all' || btnCategory === selectedCategory) {
-                    btn.style.display = 'inline-block';
-                } else {
-                    btn.style.display = 'none';
-                }
+                btn.style.display = (selectedCategory === 'all' || btnCategory === selectedCategory) ? 'inline-block' : 'none';
             });
         }
 
-        // Start App
         renderButtons();
     </script>
 </body>
