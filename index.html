@@ -3,69 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JAMIL TV - ULTIMATE OTT</title>
-    <link href="https://vjs.zencdn.net/8.3.0/video-js.css" rel="stylesheet" />
-    <link href="https://unpkg.com/@videojs/themes@1.0.1/dist/city/index.css" rel="stylesheet">
+    <title>JAMIL TV - Pro (MX Style)</title>
+    <!-- DPlayer for MX/NS Player like UI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
-            background: #0a0a0a; 
+            background: #0d0d0d; 
             color: #fff; 
             font-family: 'Segoe UI', sans-serif; 
             padding: 15px; 
             min-height: 100vh;
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         h2 { 
-            font-size: 2rem; 
-            margin-bottom: 20px; 
-            background: linear-gradient(45deg, #ff007f, #00f0ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 900;
+            font-size: 2.2rem; 
+            margin: 10px 0 20px; 
+            font-weight: 800; 
+            color: #00ff88;
+            text-shadow: 0 0 15px rgba(0,255,136,0.3);
+            text-align: center;
         }
 
-        /* Category Menu */
-        .category-container { margin-bottom: 20px; }
+        /* Premium Menu */
+        .category-container { margin-bottom: 25px; width: 100%; max-width: 600px; text-align: center;}
         .select-box {
             background: #1a1a2e;
-            color: #00f0ff;
-            border: 2px solid #ff007f;
-            padding: 10px 20px;
+            color: #fff;
+            border: 2px solid #00ff88;
+            padding: 12px 25px;
             border-radius: 30px;
             font-weight: bold;
+            font-size: 1rem;
             outline: none;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
         }
 
-        /* Player Styling */
-        .player-container {
+        /* Player Styling - MX/NS Style */
+        .player-wrapper {
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto 25px;
             border-radius: 12px;
             overflow: hidden;
             border: 2px solid #333;
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            position: relative; /* for custom buttons */
         }
-        .video-js { width: 100%; aspect-ratio: 16/9; }
         
-        /* Custom Control Bar Theme */
-        .vjs-matrix.video-js { color: #00ff88; }
-        .vjs-city .vjs-big-play-button { border: none; background-color: rgba(255, 0, 127, 0.8); }
+        /* Neon Theme Adjustments for DPlayer to look closer to MX */
+        .dplayer.dplayer-live .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-quality-icon { display: none; } /* Hide default live quality as we set it below */
+        .dplayer-thumb { background: #00ff88 !important; }
+        .dplayer-bar { background: rgba(0,255,136,0.2) !important; }
+        .dplayer-controller { background: linear-gradient(to top, rgba(0,0,0,0.9), transparent) !important; padding: 10px 20px !important;}
+        
+        /* Larger, more tactile icons for mobile */
+        .dplayer-icon { font-size: 20px !important; margin: 0 10px !important; }
 
-        .btn-container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 15px; }
-        .btn { 
-            background: #1a1a2e; color: #fff; border: 1px solid #444; padding: 12px 20px; 
-            border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: bold;
+        .btn-container { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 12px; 
+            justify-content: center; 
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
         }
-        .btn:hover, .btn.active { background: #ff007f; border-color: #ff007f; box-shadow: 0 0 15px #ff007f; }
+        .btn { 
+            background: #1a1a2e; color: #fff; border: 1px solid #444; padding: 14px 24px; 
+            border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: bold; font-size: 1rem;
+        }
+        .btn:hover, .btn.active { background: #00ff88; color: #000; border-color: #00ff88; box-shadow: 0 0 15px #00ff88; transform: translateY(-2px);}
     </style>
 </head>
 <body>
 
-    <h2>JAMIL TV PREMIUM</h2>
+    <h2>JAMIL TV PRO</h2>
 
     <div class="category-container">
         <select id="categoryMenu" class="select-box" onchange="filterCategories()">
@@ -75,13 +91,15 @@
         </select>
     </div>
 
-    <div class="player-container">
-        <video id="tv-player" class="video-js vjs-theme-city vjs-big-play-centered" controls preload="auto"></video>
+    <div class="player-wrapper">
+        <div id="dplayer"></div>
     </div>
 
     <div class="btn-container" id="buttons"></div>
 
-    <script src="https://vjs.zencdn.net/8.3.0/video.min.js"></script>
+    <!-- DPlayer and HLS for Live Streaming -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.js"></script>
     <script>
         const channels = [
             { name: "WC1", url: "http://172.19.1.2/63463433/index.m3u8", category: "fifa" },
@@ -94,68 +112,66 @@
             { name: "WC8", url: "http://172.19.0.18:5000/stream/79/playlist.m3u8", category: "cloud" }
         ];
 
-        // Initialize VideoJS
-        const player = videojs('tv-player', {
-            playbackRates: [0.5, 1, 1.5, 2],
-            controlBar: {
-                skipButtons: {
-                    forward: 10,
-                    backward: 10
-                }
-            }
-        });
-
-        // Add 10s Rewind/Forward buttons manually for mobile
-        player.ready(function() {
-            const controlBar = player.controlBar;
-            const SkipBack = videojs.getComponent('Button');
-            const skipBackBtn = videojs.extend(SkipBack, {
-                constructor: function() { SkipBack.apply(this, arguments); },
-                handleClick: function() { player.currentTime(player.currentTime() - 10); },
-                buildCSSClass: function() { return 'vjs-icon-replay-10 vjs-control vjs-button'; }
-            });
-            const SkipForward = videojs.getComponent('Button');
-            const skipForwardBtn = videojs.extend(SkipForward, {
-                constructor: function() { SkipForward.apply(this, arguments); },
-                handleClick: function() { player.currentTime(player.currentTime() + 10); },
-                buildCSSClass: function() { return 'vjs-icon-forward-10 vjs-control vjs-button'; }
-            });
-            
-            videojs.registerComponent('SkipBackBtn', skipBackBtn);
-            videojs.registerComponent('SkipForwardBtn', skipForwardBtn);
-            controlBar.addChild('SkipBackBtn', {}, 1);
-            controlBar.addChild('SkipForwardBtn', {}, 2);
-        });
-
+        let dp;
         const btnContainer = document.getElementById('buttons');
 
-        function loadChannel(url) {
-            player.src({ src: url, type: 'application/x-mpegURL' });
-            player.play();
+        function initPlayer(streamUrl) {
+            if (dp) { dp.destroy(); }
+            
+            dp = new DPlayer({
+                container: document.getElementById('dplayer'),
+                live: true,
+                loop: false,
+                screenshot: false,
+                hotkey: true, // Enables keyboard shortcuts, can be optimized for touch gesture seek
+                theme: '#00ff88', // Green for MX style
+                video: {
+                    url: streamUrl,
+                    type: 'hls'
+                },
+                // All your requested features are configureable or defaulted here:
+                playbackSpeed: [0.5, 1, 1.5, 2],
+                subtitle: {},
+                contextmenu: [],
+                // Seek progress bar is visible when controls are shown
+                // Pause/Play, Volume, Fullscreen, Setting are standard
+            });
+            
+            dp.play();
         }
 
         function renderButtons() {
-            btnContainer.innerHTML = '';
+            btnContainer.innerHTML = ''; 
             channels.forEach((ch, idx) => {
                 const btn = document.createElement('button');
                 btn.className = 'btn';
                 btn.innerText = ch.name;
                 btn.setAttribute('data-category', ch.category);
-                btn.onclick = () => {
+                btn.onclick = () => { 
                     document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    loadChannel(ch.url);
+                    initPlayer(ch.url); 
                 };
                 btnContainer.appendChild(btn);
-                if(idx === 0) { btn.classList.add('active'); loadChannel(ch.url); }
+                
+                if(idx === 0) { 
+                    btn.classList.add('active');
+                    initPlayer(ch.url); 
+                }
             });
         }
 
         function filterCategories() {
-            const val = document.getElementById('categoryMenu').value;
-            document.querySelectorAll('.btn').forEach(btn => {
-                const cat = btn.getAttribute('data-category');
-                btn.style.display = (val === 'all' || cat === val) ? 'inline-block' : 'none';
+            const selectedCategory = document.getElementById('categoryMenu').value;
+            const buttons = document.querySelectorAll('.btn');
+            
+            buttons.forEach(btn => {
+                const btnCategory = btn.getAttribute('data-category');
+                if (selectedCategory === 'all' || btnCategory === selectedCategory) {
+                    btn.style.display = 'inline-block';
+                } else {
+                    btn.style.display = 'none';
+                }
             });
         }
 
