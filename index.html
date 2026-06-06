@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JAMIL TV - Premium</title>
-    <!-- Plyr CSS for Modern Player -->
+    <title>JAMIL TV - Premium OTT</title>
+    <!-- Plyr CSS -->
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
-            background: linear-gradient(135deg, #0f0c1b 0%, #201335 50%, #0f0c1b 100%); 
+            background: linear-gradient(135deg, #0b0813 0%, #1a0f2e 50%, #0b0813 100%); 
             color: #fff; 
             font-family: 'Segoe UI', Roboto, sans-serif; 
             padding: 20px; 
@@ -17,57 +17,85 @@
             min-height: 100vh;
         }
         h2 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             margin-bottom: 20px;
             background: linear-gradient(45deg, #00ff88, #00f0ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(0,255,136,0.2);
+            text-shadow: 0 0 20px rgba(0,255,136,0.3);
             font-weight: 800;
         }
+        
+        /* Menu / Dropdown Styling */
+        .menu-container {
+            margin-bottom: 25px;
+        }
+        .menu-label {
+            font-size: 1rem;
+            margin-right: 10px;
+            color: #00f0ff;
+            font-weight: bold;
+        }
+        .category-select {
+            background: rgba(26, 15, 46, 0.8);
+            color: #fff;
+            border: 2px solid #00ff88;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+        }
+        .category-select option {
+            background: #1a0f2e;
+            color: #fff;
+        }
+
         .player-container {
             width: 100%;
             max-width: 750px;
-            margin: 0 auto 30px;
+            margin: 0 auto 25px;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(0, 240, 255, 0.3);
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 255, 136, 0.2);
+            border: 2px solid rgba(0, 255, 136, 0.2);
         }
-        /* Customizing Plyr Styling to match Neon Theme */
+        
+        /* Neon Theme Adjustments for Plyr */
         .plyr--video { --plyr-color-main: #00ff88; }
+        .plyr__control--overlaid { background: rgba(0, 255, 136, 0.8); color: #000; }
         
         .btn-container { 
             display: flex; 
             flex-wrap: wrap; 
-            gap: 12px; 
+            gap: 10px; 
             justify-content: center; 
             max-width: 800px;
             margin: 0 auto;
         }
         .btn { 
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
             color: #fff; 
-            border: 1px solid rgba(0, 255, 136, 0.4); 
-            padding: 14px 24px; 
+            border: 1px solid rgba(0, 240, 255, 0.3); 
+            padding: 12px 20px; 
             font-weight: bold; 
-            font-size: 1rem;
+            font-size: 0.95rem;
             border-radius: 8px; 
             cursor: pointer; 
             transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             backdrop-filter: blur(5px);
         }
         .btn:hover { 
-            background: #00ff88; 
+            background: #00f0ff; 
             color: #000;
-            box-shadow: 0 0 15px #00ff88;
+            box-shadow: 0 0 15px #00f0ff;
             transform: translateY(-2px);
         }
         .btn.active {
             background: linear-gradient(45deg, #00ff88, #00f0ff);
             color: #000;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
             border: none;
         }
     </style>
@@ -76,61 +104,90 @@
 
     <h2>📺 JAMIL TV PREMIUM</h2>
 
+    <!-- Category Menu Option -->
+    <div class="menu-container">
+        <span class="menu-label">ক্যাটাগরি সিলেক্ট কর:</span>
+        <select id="categoryMenu" class="category-select" onchange="filterCategories()">
+            <option value="all">সব চ্যানেল (All)</option>
+            <option value="fifa">FIFA Dedicated</option>
+            <option value="cloud">Cloud & Redforce TV</option>
+        </select>
+    </div>
+
     <div class="player-container">
-        <video id="player" playsinline controls></video>
+        <video id="player" playsinline controls crossorigin></video>
     </div>
 
     <div class="btn-container" id="buttons"></div>
 
-    <!-- Plyr & HLS JS Scripts for live streaming and advanced UI -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
     <script>
+        // চ্যানেলগুলোকে ক্যাটাগরি (category) ট্যাগে ভাগ করা হয়েছে
         const channels = [
-            { name: "WC1", url: "http://172.19.1.2/63463433/index.m3u8" },
-            { name: "WC2", url: "http://172.19.1.2/9865678/index.m3u8" },
-            { name: "WC3", url: "http://172.19.1.2/9346574/index.m3u8" },
-            { name: "WC4", url: "http://172.19.1.2/9090801/index.m3u8" },
-            { name: "WC5", url: "http://172.19.0.18:5000/stream/1/playlist.m3u8" },
-            { name: "WC6", url: "http://172.19.0.18:5000/stream/3748291029384/playlist.m3u8" },
-            { name: "WC7", url: "http://172.19.0.18:5000/stream/9182736450293/playlist.m3u8" },
-            { name: "WC8", url: "http://172.19.0.18:5000/stream/79/playlist.m3u8" }
+            { name: "WC1", url: "http://172.19.1.2/63463433/index.m3u8", category: "fifa" },
+            { name: "WC2", url: "http://172.19.1.2/9865678/index.m3u8", category: "fifa" },
+            { name: "WC3", url: "http://172.19.1.2/9346574/index.m3u8", category: "fifa" },
+            { name: "WC4", url: "http://172.19.1.2/9090801/index.m3u8", category: "fifa" },
+            { name: "WC5", url: "http://172.19.0.18:5000/stream/1/playlist.m3u8", category: "cloud" },
+            { name: "WC6", url: "http://172.19.0.18:5000/stream/3748291029384/playlist.m3u8", category: "cloud" },
+            { name: "WC7", url: "http://172.19.0.18:5000/stream/9182736450293/playlist.m3u8", category: "cloud" },
+            { name: "WC8", url: "http://172.19.0.18:5000/stream/79/playlist.m3u8", category: "cloud" }
         ];
 
         const video = document.getElementById('player');
         let hls;
         
-        // Plyr Configuration with all your requested features
         const player = new Plyr(video, {
             controls: [
-                'play-large', 'play', 'fast-forward', 'progress', 
-                'current-time', 'mute', 'volume', 'settings', 'fullscreen'
+                'play-large', 'play', 'rewind', 'fast-forward', 'progress', 
+                'current-time', 'mute', 'volume', 'settings', 'pip', 'fullscreen'
             ],
             settings: ['quality', 'speed'],
             speed: { selected: 1, options: [0.5, 1, 1.5, 2] },
-            seekTime: 10 // 10 seconds rewind/forward
+            seekTime: 10
         });
-
-        // Add 10s Rewind and Forward features manually inside Plyr shortcuts
-        window.player = player;
 
         const btnContainer = document.getElementById('buttons');
 
-        channels.forEach((ch, idx) => {
-            const btn = document.createElement('button');
-            btn.className = 'btn';
-            btn.innerText = ch.name;
-            btn.onclick = () => { 
-                document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                playStream(ch.url); 
-            };
-            btnContainer.appendChild(btn);
-            if(idx === 0) { 
-                btn.classList.add('active');
-                playStream(ch.url); 
-            }
-        });
+        // বাটন জেনারেট করার ফাংশন
+        function renderButtons() {
+            btnContainer.innerHTML = ''; // ক্লিয়ার করার জন্য
+            channels.forEach((ch, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn';
+                btn.innerText = ch.name;
+                btn.setAttribute('data-category', ch.category);
+                btn.onclick = () => { 
+                    document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    playStream(ch.url); 
+                };
+                btnContainer.appendChild(btn);
+                
+                // প্রথম চ্যানেলটি অটো-প্লে করার জন্য
+                if(idx === 0) { 
+                    btn.classList.add('active');
+                    playStream(ch.url); 
+                }
+            });
+        }
+
+        // ক্যাটাগরি অনুযায়ী ফিল্টার করার ফাংশন
+        function filterCategories() {
+            const selectedCategory = document.getElementById('categoryMenu').value;
+            const buttons = document.querySelectorAll('.btn');
+            
+            buttons.forEach(btn => {
+                const btnCategory = btn.getAttribute('data-category');
+                if (selectedCategory === 'all' || btnCategory === selectedCategory) {
+                    btn.style.display = 'inline-block'; // দেখাবে
+                } else {
+                    btn.style.display = 'none'; // হাইড করবে
+                }
+            });
+        }
 
         function playStream(url) {
             if (Hls.isSupported()) {
@@ -139,7 +196,6 @@
                 hls.loadSource(url);
                 hls.attachMedia(video);
                 hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                    // Automatically generate quality levels from your local broadband provider's stream
                     const availableQualities = hls.levels.map(l => l.height);
                     player.config.quality = {
                         default: availableQualities[0],
@@ -156,12 +212,13 @@
         function updateQuality(newQuality) {
             if (hls) {
                 hls.levels.forEach((level, levelIndex) => {
-                    if (level.height === newQuality) {
-                        hls.currentLevel = levelIndex;
-                    }
+                    if (level.height === newQuality) { hls.currentLevel = levelIndex; }
                 });
             }
         }
+
+        // একদম শুরুতে বাটনগুলো লোড করা
+        renderButtons();
     </script>
 </body>
 </html>
