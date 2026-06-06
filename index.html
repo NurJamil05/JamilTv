@@ -3,87 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JAMIL TV - Pro (MX Style)</title>
-    <!-- DPlayer for MX/NS Player like UI -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.css">
+    <title>JAMIL TV - Ultimate Premium</title>
+    <link href="https://vjs.zencdn.net/8.3.0/video-js.css" rel="stylesheet" />
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
-            background: #0d0d0d; 
+            background: #06040a; 
             color: #fff; 
             font-family: 'Segoe UI', sans-serif; 
             padding: 15px; 
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        h2 { 
-            font-size: 2.2rem; 
-            margin: 10px 0 20px; 
-            font-weight: 800; 
-            color: #00ff88;
-            text-shadow: 0 0 15px rgba(0,255,136,0.3);
             text-align: center;
         }
-
-        /* Premium Menu */
-        .category-container { margin-bottom: 25px; width: 100%; max-width: 600px; text-align: center;}
-        .select-box {
-            background: #1a1a2e;
-            color: #fff;
-            border: 2px solid #00ff88;
-            padding: 12px 25px;
-            border-radius: 30px;
-            font-weight: bold;
-            font-size: 1rem;
-            outline: none;
-            cursor: pointer;
-            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        h2 { 
+            font-size: 1.8rem; 
+            margin: 10px 0 15px; 
+            background: linear-gradient(45deg, #00ff88, #00f0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
         }
 
-        /* Player Styling - MX/NS Style */
-        .player-wrapper {
+        /* Category Selector Styling */
+        .menu-wrapper {
+            margin-bottom: 20px;
+        }
+        .select-box {
+            background: #11091f;
+            color: #00f0ff;
+            border: 2px solid #00ff88;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            outline: none;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+        }
+
+        /* Player Wrapper - MX/NS Player UI */
+        .player-container {
             width: 100%;
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto 25px;
             border-radius: 12px;
             overflow: hidden;
-            border: 2px solid #333;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            position: relative; /* for custom buttons */
+            border: 2px solid #11091f;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 20px rgba(0, 255, 136, 0.1);
+            position: relative;
         }
+        .video-js { width: 100%; aspect-ratio: 16/9; }
         
-        /* Neon Theme Adjustments for DPlayer to look closer to MX */
-        .dplayer.dplayer-live .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-quality-icon { display: none; } /* Hide default live quality as we set it below */
-        .dplayer-thumb { background: #00ff88 !important; }
-        .dplayer-bar { background: rgba(0,255,136,0.2) !important; }
-        .dplayer-controller { background: linear-gradient(to top, rgba(0,0,0,0.9), transparent) !important; padding: 10px 20px !important;}
-        
-        /* Larger, more tactile icons for mobile */
-        .dplayer-icon { font-size: 20px !important; margin: 0 10px !important; }
+        /* Premium MX Player UI Customization */
+        .video-js .vjs-big-play-button { 
+            background-color: rgba(0, 255, 136, 0.8) !important; 
+            border: none !important;
+            color: #000 !important;
+            border-radius: 50% !important;
+            width: 65px !important;
+            height: 65px !important;
+            line-height: 65px !important;
+            margin-top: -32.5px !important;
+            margin-left: -32.5px !important;
+        }
+        .video-js .vjs-control-bar { background-color: rgba(6, 4, 10, 0.85) !important; height: 50px !important; }
+        .video-js .vjs-play-progress { background-color: #00ff88 !important; }
+        .video-js .vjs-slider { background-color: rgba(255, 255, 255, 0.2) !important; }
+        .video-js .vjs-load-progress { background: rgba(255, 255, 255, 0.1) !important; }
 
-        .btn-container { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 12px; 
-            justify-content: center; 
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
-        }
+        /* Channels Grid */
+        .btn-container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 15px; }
         .btn { 
-            background: #1a1a2e; color: #fff; border: 1px solid #444; padding: 14px 24px; 
-            border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: bold; font-size: 1rem;
+            background: #11091f; color: #fff; border: 1px solid rgba(0, 240, 255, 0.2); padding: 12px 22px; 
+            border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: bold; font-size: 0.95rem;
         }
-        .btn:hover, .btn.active { background: #00ff88; color: #000; border-color: #00ff88; box-shadow: 0 0 15px #00ff88; transform: translateY(-2px);}
+        .btn:hover { background: rgba(0, 255, 136, 0.2); border-color: #00ff88; }
+        .btn.active { background: linear-gradient(45deg, #00ff88, #00f0ff); color: #000; border: none; box-shadow: 0 0 15px #00ff88; }
     </style>
 </head>
 <body>
 
-    <h2>JAMIL TV PRO</h2>
+    <h2>JAMIL TV ULTIMATE</h2>
 
-    <div class="category-container">
+    <div class="menu-wrapper">
         <select id="categoryMenu" class="select-box" onchange="filterCategories()">
             <option value="all">Category: All</option>
             <option value="fifa">Category: FIFA Dedicated</option>
@@ -91,15 +92,13 @@
         </select>
     </div>
 
-    <div class="player-wrapper">
-        <div id="dplayer"></div>
+    <div class="player-container">
+        <video id="tv-player" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" playsinline></video>
     </div>
 
     <div class="btn-container" id="buttons"></div>
 
-    <!-- DPlayer and HLS for Live Streaming -->
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.js"></script>
+    <script src="https://vjs.zencdn.net/8.3.0/video.min.js"></script>
     <script>
         const channels = [
             { name: "WC1", url: "http://172.19.1.2/63463433/index.m3u8", category: "fifa" },
@@ -112,66 +111,71 @@
             { name: "WC8", url: "http://172.19.0.18:5000/stream/79/playlist.m3u8", category: "cloud" }
         ];
 
-        let dp;
+        // MX Player style configurations with Speed Control and 10s Skip Buttons Built-in
+        const player = videojs('tv-player', {
+            playbackRates: [0.5, 1, 1.5, 2],
+            controlBar: {
+                skipButtons: {
+                    forward: 10,
+                    backward: 10
+                }
+            }
+        });
+
+        // Double Tap Gesture for Mobile (Like MX / YouTube)
+        player.ready(function() {
+            const el = player.el();
+            let lastTap = 0;
+
+            el.addEventListener('touchend', function(e) {
+                const currentTime = new Date().getTime();
+                const tapLength = currentTime - lastTap;
+                if (tapLength < 300 && tapLength > 0) {
+                    // Get tap position to see if it's left or right side of screen
+                    const rect = el.getBoundingClientRect();
+                    const x = e.changedTouches[0].clientX - rect.left;
+                    if (x < rect.width / 2) {
+                        player.currentTime(player.currentTime() - 10); // Left Side Double Tap = Rewind 10s
+                    } else {
+                        player.currentTime(player.currentTime() + 10); // Right Side Double Tap = Forward 10s
+                    }
+                    e.preventDefault();
+                }
+                lastTap = currentTime;
+            });
+        });
+
         const btnContainer = document.getElementById('buttons');
 
-        function initPlayer(streamUrl) {
-            if (dp) { dp.destroy(); }
-            
-            dp = new DPlayer({
-                container: document.getElementById('dplayer'),
-                live: true,
-                loop: false,
-                screenshot: false,
-                hotkey: true, // Enables keyboard shortcuts, can be optimized for touch gesture seek
-                theme: '#00ff88', // Green for MX style
-                video: {
-                    url: streamUrl,
-                    type: 'hls'
-                },
-                // All your requested features are configureable or defaulted here:
-                playbackSpeed: [0.5, 1, 1.5, 2],
-                subtitle: {},
-                contextmenu: [],
-                // Seek progress bar is visible when controls are shown
-                // Pause/Play, Volume, Fullscreen, Setting are standard
+        function loadChannel(url) {
+            player.src({ src: url, type: 'application/x-mpegURL' });
+            player.play().catch(function(error) {
+                console.log("Stream load error: ", error);
             });
-            
-            dp.play();
         }
 
         function renderButtons() {
-            btnContainer.innerHTML = ''; 
+            btnContainer.innerHTML = '';
             channels.forEach((ch, idx) => {
                 const btn = document.createElement('button');
                 btn.className = 'btn';
                 btn.innerText = ch.name;
                 btn.setAttribute('data-category', ch.category);
-                btn.onclick = () => { 
+                btn.onclick = () => {
                     document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    initPlayer(ch.url); 
+                    loadChannel(ch.url);
                 };
                 btnContainer.appendChild(btn);
-                
-                if(idx === 0) { 
-                    btn.classList.add('active');
-                    initPlayer(ch.url); 
-                }
+                if(idx === 0) { btn.classList.add('active'); loadChannel(ch.url); }
             });
         }
 
         function filterCategories() {
-            const selectedCategory = document.getElementById('categoryMenu').value;
-            const buttons = document.querySelectorAll('.btn');
-            
-            buttons.forEach(btn => {
-                const btnCategory = btn.getAttribute('data-category');
-                if (selectedCategory === 'all' || btnCategory === selectedCategory) {
-                    btn.style.display = 'inline-block';
-                } else {
-                    btn.style.display = 'none';
-                }
+            const val = document.getElementById('categoryMenu').value;
+            document.querySelectorAll('.btn').forEach(btn => {
+                const cat = btn.getAttribute('data-category');
+                btn.style.display = (val === 'all' || cat === val) ? 'inline-block' : 'none';
             });
         }
 
