@@ -3,55 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JAMIL TV</title>
-    <link href="https://vjs.zencdn.net/8.3.0/video-js.css" rel="stylesheet" />
+    <title>JAMIL TV - Premium</title>
+    <!-- Plyr CSS for Modern Player -->
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <style>
-        body { background: #121212; color: #fff; font-family: sans-serif; padding: 15px; text-align: center; }
-        .video-js { width: 100% !important; max-width: 600px; height: auto; aspect-ratio: 16/9; margin: 0 auto 20px; border-radius: 8px; }
-        .btn-container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-        .btn { background: #00ff88; color: #000; border: none; padding: 12px 20px; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.2s; }
-        .btn:hover { background: #00cc6e; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            background: linear-gradient(135deg, #0f0c1b 0%, #201335 50%, #0f0c1b 100%); 
+            color: #fff; 
+            font-family: 'Segoe UI', Roboto, sans-serif; 
+            padding: 20px; 
+            text-align: center;
+            min-height: 100vh;
+        }
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00ff88, #00f0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0,255,136,0.2);
+            font-weight: 800;
+        }
+        .player-container {
+            width: 100%;
+            max-width: 750px;
+            margin: 0 auto 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(0, 240, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        /* Customizing Plyr Styling to match Neon Theme */
+        .plyr--video { --plyr-color-main: #00ff88; }
+        
+        .btn-container { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 12px; 
+            justify-content: center; 
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .btn { 
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff; 
+            border: 1px solid rgba(0, 255, 136, 0.4); 
+            padding: 14px 24px; 
+            font-weight: bold; 
+            font-size: 1rem;
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+        }
+        .btn:hover { 
+            background: #00ff88; 
+            color: #000;
+            box-shadow: 0 0 15px #00ff88;
+            transform: translateY(-2px);
+        }
+        .btn.active {
+            background: linear-gradient(45deg, #00ff88, #00f0ff);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+            border: none;
+        }
     </style>
 </head>
 <body>
 
-    <h2>📺 JAMIL TV</h2><br>
+    <h2>📺 JAMIL TV PREMIUM</h2>
 
-    <video id="tv-player" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto"></video>
+    <div class="player-container">
+        <video id="player" playsinline controls></video>
+    </div>
 
     <div class="btn-container" id="buttons"></div>
 
-    <script src="https://vjs.zencdn.net/8.3.0/video.js"></script>
+    <!-- Plyr & HLS JS Scripts for live streaming and advanced UI -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
     <script>
-        // তোর দেওয়া সব লিংকের পারফেক্ট লিস্ট
         const channels = [
-            { name: "WC1", url: "http://172.19.1.2/63463433/index.m3u8", type: "application/x-mpegURL" },
-            { name: "WC2", url: "http://172.19.1.2/9865678/index.m3u8", type: "application/x-mpegURL" },
-            { name: "WC3", url: "http://172.19.1.2/9346574/index.m3u8", type: "application/x-mpegURL" },
-            { name: "WC4", url: "http://172.19.1.2/9090801/index.m3u8", type: "application/x-mpegURL" },
-            { name: "WC5", url: "http://172.19.0.18:5000/stream/1/playlist.m3u8", type: "application/x-mpegURL" },
-            { name: "WC6", url: "http://172.19.0.18:5000/stream/3748291029384/playlist.m3u8", type: "application/x-mpegURL" },
-            { name: "WC7", url: "http://172.19.0.18:5000/stream/9182736450293/playlist.m3u8", type: "application/x-mpegURL" },
-            { name: "WC8", url: "http://172.19.0.18:5000/stream/79/playlist.m3u8", type: "application/x-mpegURL" }
+            { name: "WC1", url: "http://172.19.1.2/63463433/index.m3u8" },
+            { name: "WC2", url: "http://172.19.1.2/9865678/index.m3u8" },
+            { name: "WC3", url: "http://172.19.1.2/9346574/index.m3u8" },
+            { name: "WC4", url: "http://172.19.1.2/9090801/index.m3u8" },
+            { name: "WC5", url: "http://172.19.0.18:5000/stream/1/playlist.m3u8" },
+            { name: "WC6", url: "http://172.19.0.18:5000/stream/3748291029384/playlist.m3u8" },
+            { name: "WC7", url: "http://172.19.0.18:5000/stream/9182736450293/playlist.m3u8" },
+            { name: "WC8", url: "http://172.19.0.18:5000/stream/79/playlist.m3u8" }
         ];
 
-        const player = videojs('tv-player');
+        const video = document.getElementById('player');
+        let hls;
+        
+        // Plyr Configuration with all your requested features
+        const player = new Plyr(video, {
+            controls: [
+                'play-large', 'play', 'fast-forward', 'progress', 
+                'current-time', 'mute', 'volume', 'settings', 'fullscreen'
+            ],
+            settings: ['quality', 'speed'],
+            speed: { selected: 1, options: [0.5, 1, 1.5, 2] },
+            seekTime: 10 // 10 seconds rewind/forward
+        });
+
+        // Add 10s Rewind and Forward features manually inside Plyr shortcuts
+        window.player = player;
+
         const btnContainer = document.getElementById('buttons');
 
         channels.forEach((ch, idx) => {
             const btn = document.createElement('button');
             btn.className = 'btn';
             btn.innerText = ch.name;
-            btn.onclick = () => { playStream(ch.url, ch.type); };
+            btn.onclick = () => { 
+                document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                playStream(ch.url); 
+            };
             btnContainer.appendChild(btn);
-            if(idx === 0) { playStream(ch.url, ch.type); }
+            if(idx === 0) { 
+                btn.classList.add('active');
+                playStream(ch.url); 
+            }
         });
 
-        function playStream(url, type) {
-            player.src({ src: url, type: type });
-            player.play().catch(function(error) {
-                console.log("Error playing stream: ", error);
-            });
+        function playStream(url) {
+            if (Hls.isSupported()) {
+                if (hls) { hls.destroy(); }
+                hls = new Hls();
+                hls.loadSource(url);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    // Automatically generate quality levels from your local broadband provider's stream
+                    const availableQualities = hls.levels.map(l => l.height);
+                    player.config.quality = {
+                        default: availableQualities[0],
+                        options: availableQualities,
+                        forced: true,
+                        onChange: (e) => updateQuality(e)
+                    };
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = url;
+            }
+        }
+
+        function updateQuality(newQuality) {
+            if (hls) {
+                hls.levels.forEach((level, levelIndex) => {
+                    if (level.height === newQuality) {
+                        hls.currentLevel = levelIndex;
+                    }
+                });
+            }
         }
     </script>
 </body>
