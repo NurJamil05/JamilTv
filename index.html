@@ -9,72 +9,89 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
-            background-color: #02FFF0; /* তোর দেওয়া ব্যাকগ্রাউন্ড কালার */
-            color: #3200AC; /* তোর দেওয়া লেখার কালার */
+            background-color: #02FFF0; 
+            color: #3200AC; 
             font-family: 'Segoe UI', Roboto, sans-serif; 
             padding: 20px; 
             text-align: center;
             min-height: 100vh;
         }
-        h2 {
-            font-size: 2.2rem;
-            margin-top: 10px;
-            margin-bottom: 25px;
-            color: #3200AC;
-            font-weight: 800;
-            text-shadow: 0 2px 4px rgba(50, 0, 172, 0.2);
+        
+        /* লোগোর প্রিমিয়াম স্টাইল */
+        .logo-container {
+            margin: 15px auto 5px;
+        }
+        .logo { 
+            width: 140px; 
+            height: auto;
+            border-radius: 12px; 
+            box-shadow: 0 5px 15px rgba(50, 0, 172, 0.3);
+            transition: transform 0.3s ease; 
+        }
+        .logo:hover { 
+            transform: scale(1.08); 
         }
 
-        .player-container {
-            width: 100%;
-            max-width: 750px;
-            margin: 0 auto 30px;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(50, 0, 172, 0.3);
-            border: 3px solid #3200AC; /* প্লেয়ারের বর্ডার কালার */
+        h2 { 
+            font-size: 2rem; 
+            margin-bottom: 25px; 
+            color: #3200AC; 
+            font-weight: 800; 
+        }
+
+        .player-container { 
+            width: 100%; 
+            max-width: 750px; 
+            margin: 0 auto 30px; 
+            border-radius: 15px; 
+            overflow: hidden; 
+            box-shadow: 0 10px 30px rgba(50, 0, 172, 0.3); 
+            border: 3px solid #3200AC; 
         }
         
-        /* Plyr Custom Theme */
+        /* Plyr Theme Color Customization */
         .plyr--video { --plyr-color-main: #3200AC; }
         .plyr__control--overlaid { background: rgba(50, 0, 172, 0.9); color: #02FFF0; }
         
-        /* Channels Grid */
+        /* Buttons Grid */
         .btn-container { 
             display: flex; 
             flex-wrap: wrap; 
             gap: 12px; 
             justify-content: center; 
-            max-width: 850px;
-            margin: 0 auto;
+            max-width: 850px; 
+            margin: 0 auto; 
         }
         .btn { 
-            background: transparent;
+            background: transparent; 
             color: #3200AC; 
             border: 2px solid #3200AC; 
             padding: 14px 24px; 
             font-weight: bold; 
-            font-size: 1rem;
+            font-size: 1rem; 
             border-radius: 8px; 
             cursor: pointer; 
-            transition: all 0.3s ease;
+            transition: all 0.3s ease; 
         }
         .btn:hover { 
             background: #3200AC; 
-            color: #02FFF0;
-            box-shadow: 0 0 15px rgba(50, 0, 172, 0.4);
-            transform: translateY(-2px);
+            color: #02FFF0; 
         }
-        .btn.active {
-            background: #3200AC;
-            color: #02FFF0;
-            box-shadow: 0 0 20px rgba(50, 0, 172, 0.6);
+        .btn.active { 
+            background: #3200AC; 
+            color: #02FFF0; 
+            box-shadow: 0 0 20px rgba(50, 0, 172, 0.6); 
         }
     </style>
 </head>
 <body>
 
-    <h2>📺 JAMIL TV PREMIUM</h2>
+    <!-- তোর দেওয়া ফুটবল লাইভ স্ট্রিমিং লোগো -->
+    <div class="logo-container">
+        <img src="https://static.vecteezy.com/system/resources/previews/029/933/242/non_2x/live-football-streaming-icon-button-for-broadcasting-or-online-football-stream-illustration-vector.jpg" alt="JAMIL TV Logo" class="logo">
+    </div>
+    
+    <h2>JAMIL TV PREMIUM</h2>
 
     <div class="player-container">
         <video id="player" playsinline controls crossorigin muted autoplay></video>
@@ -99,21 +116,13 @@
 
         const video = document.getElementById('player');
         let hls;
-        
         const player = new Plyr(video, {
-            controls: [
-                'play-large', 'play', 'rewind', 'fast-forward', 'progress', 
-                'current-time', 'mute', 'volume', 'settings', 'pip', 'fullscreen'
-            ],
-            settings: ['quality', 'speed'],
-            speed: { selected: 1, options: [0.5, 1, 1.5, 2] },
-            seekTime: 10,
-            autoplay: true,
+            controls: ['play-large', 'play', 'rewind', 'fast-forward', 'progress', 'current-time', 'mute', 'volume', 'settings', 'pip', 'fullscreen'],
+            autoplay: true, 
             muted: true
         });
 
         const btnContainer = document.getElementById('buttons');
-
         function renderButtons() {
             btnContainer.innerHTML = ''; 
             channels.forEach((ch, idx) => {
@@ -121,16 +130,12 @@
                 btn.className = 'btn';
                 btn.innerText = ch.name;
                 btn.onclick = () => { 
-                    document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
+                    document.querySelectorAll('.btn').forEach(b => b.classList.remove('active')); 
+                    btn.classList.add('active'); 
                     playStream(ch.url); 
                 };
                 btnContainer.appendChild(btn);
-                
-                if(idx === 0) { 
-                    btn.classList.add('active');
-                    playStream(ch.url); 
-                }
+                if(idx === 0) { btn.classList.add('active'); playStream(ch.url); }
             });
         }
 
@@ -140,31 +145,13 @@
                 hls = new Hls();
                 hls.loadSource(url);
                 hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                    const availableQualities = hls.levels.map(l => l.height);
-                    player.config.quality = {
-                        default: availableQualities[0],
-                        options: availableQualities,
-                        forced: true,
-                        onChange: (e) => updateQuality(e)
-                    };
-                    player.play().catch(err => console.log("Autoplay blocked:", err));
-                });
+                hls.on(Hls.Events.MANIFEST_PARSED, () => player.play().catch(e => console.log(e)));
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = url;
-                video.play().catch(err => console.log("Autoplay blocked:", err));
+                video.play().catch(e => console.log(e));
             }
         }
-
-        function updateQuality(newQuality) {
-            if (hls) {
-                hls.levels.forEach((level, levelIndex) => {
-                    if (level.height === newQuality) { hls.currentLevel = levelIndex; }
-                });
-            }
-        }
-
         renderButtons();
     </script>
 </body>
-    </html>
+</html>
