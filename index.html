@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JAMIL TV - Premium Live</title>
-    <!-- Plyr CSS -->
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -15,9 +14,16 @@
             padding: 20px; 
             text-align: center;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* ফুটারকে সবসময় নিচে ধরে রাখার জন্য */
         }
         
-        /* লোগোর প্রিমিয়াম স্টাইল */
+        .main-content {
+            flex: 1;
+        }
+        
+        /* লোগো স্টাইল */
         .logo-container {
             margin: 15px auto 5px;
         }
@@ -49,29 +55,36 @@
             border: 3px solid #3200AC; 
         }
         
-        /* Plyr Theme Color Customization */
+        /* Plyr Custom Theme */
         .plyr--video { --plyr-color-main: #3200AC; }
         .plyr__control--overlaid { background: rgba(50, 0, 172, 0.9); color: #02FFF0; }
         
-        /* Buttons Grid */
+        /* responsive বাটন গ্রিড */
         .btn-container { 
-            display: flex; 
-            flex-wrap: wrap; 
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* মোবাইলে ১ লাইনে ২টা বাটন */
             gap: 12px; 
-            justify-content: center; 
             max-width: 850px; 
-            margin: 0 auto; 
+            margin: 0 auto 40px; 
         }
+        
+        @media (min-width: 600px) {
+            .btn-container {
+                grid-template-columns: repeat(4, 1fr); /* পিসি বা ট্যাবে ১ লাইনে ৪টা বাটন */
+            }
+        }
+
         .btn { 
             background: transparent; 
             color: #3200AC; 
             border: 2px solid #3200AC; 
-            padding: 14px 24px; 
+            padding: 14px 15px; 
             font-weight: bold; 
-            font-size: 1rem; 
+            font-size: 0.95rem; 
             border-radius: 8px; 
             cursor: pointer; 
             transition: all 0.3s ease; 
+            text-transform: uppercase; /* সব লেখা অটো বড় হাতের হবে */
         }
         .btn:hover { 
             background: #3200AC; 
@@ -82,24 +95,39 @@
             color: #02FFF0; 
             box-shadow: 0 0 20px rgba(50, 0, 172, 0.6); 
         }
+
+        /* তোর দেওয়া প্রিমিয়াম ফুটার স্টাইল */
+        footer {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #3200AC;
+            padding: 20px 0 10px;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(50, 0, 172, 0.15);
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- তোর দেওয়া ফুটবল লাইভ স্ট্রিমিং লোগো -->
-    <div class="logo-container">
-        <img src="https://static.vecteezy.com/system/resources/previews/029/933/242/non_2x/live-football-streaming-icon-button-for-broadcasting-or-online-football-stream-illustration-vector.jpg" alt="JAMIL TV Logo" class="logo">
+    <div class="main-content">
+        <div class="logo-container">
+            <img src="https://static.vecteezy.com/system/resources/previews/029/933/242/non_2x/live-football-streaming-icon-button-for-broadcasting-or-online-football-stream-illustration-vector.jpg" alt="JAMIL TV Logo" class="logo">
+        </div>
+        
+        <h2>JAMIL TV PREMIUM</h2>
+
+        <div class="player-container">
+            <video id="player" playsinline controls crossorigin muted autoplay></video>
+        </div>
+
+        <div class="btn-container" id="buttons"></div>
     </div>
-    
-    <h2>JAMIL TV PREMIUM</h2>
 
-    <div class="player-container">
-        <video id="player" playsinline controls crossorigin muted autoplay></video>
-    </div>
+    <footer>
+        Jamil TV 2026 | ALL RIGHT RESERVED
+    </footer>
 
-    <div class="btn-container" id="buttons"></div>
-
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
     <script>
