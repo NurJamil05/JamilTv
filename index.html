@@ -80,7 +80,7 @@
     <h2>📺 JAMIL TV PREMIUM</h2>
 
     <div class="player-container">
-        <video id="player" playsinline controls crossorigin></video>
+        <video id="player" playsinline controls crossorigin muted autoplay></video>
     </div>
 
     <div class="btn-container" id="buttons"></div>
@@ -88,7 +88,7 @@
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
     <script>
-        // তোর নতুন এবং রিফাইন করা চ্যানেলের লিস্ট
+        // তোর সেই চেনা লোকাল আইপিটিভি সার্ভারের লিঙ্কগুলোই ফেরত আনা হলো
         const channels = [
             { name: "WC1", url: "http://172.19.1.2/63463433/index.m3u8" },
             { name: "WC2", url: "http://172.19.1.2/9865678/index.m3u8" },
@@ -103,7 +103,7 @@
         const video = document.getElementById('player');
         let hls;
         
-        // Plyr Configuration with Pip
+        // Plyr Configuration - ব্রাউজারে ফোর্সড অটো-প্লে সচল করার জন্য মিউটেড ট্রু করা হলো
         const player = new Plyr(video, {
             controls: [
                 'play-large', 'play', 'rewind', 'fast-forward', 'progress', 
@@ -111,12 +111,13 @@
             ],
             settings: ['quality', 'speed'],
             speed: { selected: 1, options: [0.5, 1, 1.5, 2] },
-            seekTime: 10
+            seekTime: 10,
+            autoplay: true,
+            muted: true
         });
 
         const btnContainer = document.getElementById('buttons');
 
-        // সোজা সব চ্যানেলের বাটন জেনারেট হবে (কোনো ক্যাটাগরি ফিল্টার ছাড়া)
         function renderButtons() {
             btnContainer.innerHTML = ''; 
             channels.forEach((ch, idx) => {
@@ -130,7 +131,6 @@
                 };
                 btnContainer.appendChild(btn);
                 
-                // প্রথম চ্যানেল (WC1) অটো-প্লে করার জন্য
                 if(idx === 0) { 
                     btn.classList.add('active');
                     playStream(ch.url); 
@@ -152,9 +152,12 @@
                         forced: true,
                         onChange: (e) => updateQuality(e)
                     };
+                    // স্ট্রিম লোড হওয়ামাত্রই প্লে করার কমান্ড
+                    player.play().catch(err => console.log("Autoplay blocked:", err));
                 });
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = url;
+                video.play().catch(err => console.log("Autoplay blocked:", err));
             }
         }
 
