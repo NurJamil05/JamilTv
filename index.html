@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JAMIL TV - Premium Live</title>
+    <!-- Plyr CSS -->
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
-            background: linear-gradient(135deg, #0b0813 0%, #1a0f2e 50%, #0b0813 100%); 
-            color: #fff; 
+            background-color: #02FFF0; /* তোর দেওয়া ব্যাকগ্রাউন্ড কালার */
+            color: #3200AC; /* তোর দেওয়া লেখার কালার */
             font-family: 'Segoe UI', Roboto, sans-serif; 
             padding: 20px; 
             text-align: center;
@@ -19,11 +20,9 @@
             font-size: 2.2rem;
             margin-top: 10px;
             margin-bottom: 25px;
-            background: linear-gradient(45deg, #00ff88, #00f0ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(0,255,136,0.3);
+            color: #3200AC;
             font-weight: 800;
+            text-shadow: 0 2px 4px rgba(50, 0, 172, 0.2);
         }
 
         .player-container {
@@ -32,13 +31,13 @@
             margin: 0 auto 30px;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 255, 136, 0.2);
-            border: 2px solid rgba(0, 255, 136, 0.2);
+            box-shadow: 0 10px 30px rgba(50, 0, 172, 0.3);
+            border: 3px solid #3200AC; /* প্লেয়ারের বর্ডার কালার */
         }
         
-        /* Plyr Neon Theme Customization */
-        .plyr--video { --plyr-color-main: #00ff88; }
-        .plyr__control--overlaid { background: rgba(0, 255, 136, 0.8); color: #000; }
+        /* Plyr Custom Theme */
+        .plyr--video { --plyr-color-main: #3200AC; }
+        .plyr__control--overlaid { background: rgba(50, 0, 172, 0.9); color: #02FFF0; }
         
         /* Channels Grid */
         .btn-container { 
@@ -50,28 +49,26 @@
             margin: 0 auto;
         }
         .btn { 
-            background: rgba(255, 255, 255, 0.03);
-            color: #fff; 
-            border: 1px solid rgba(0, 240, 255, 0.3); 
+            background: transparent;
+            color: #3200AC; 
+            border: 2px solid #3200AC; 
             padding: 14px 24px; 
             font-weight: bold; 
             font-size: 1rem;
             border-radius: 8px; 
             cursor: pointer; 
             transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
         }
         .btn:hover { 
-            background: #00f0ff; 
-            color: #000;
-            box-shadow: 0 0 15px #00f0ff;
+            background: #3200AC; 
+            color: #02FFF0;
+            box-shadow: 0 0 15px rgba(50, 0, 172, 0.4);
             transform: translateY(-2px);
         }
         .btn.active {
-            background: linear-gradient(45deg, #00ff88, #00f0ff);
-            color: #000;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
-            border: none;
+            background: #3200AC;
+            color: #02FFF0;
+            box-shadow: 0 0 20px rgba(50, 0, 172, 0.6);
         }
     </style>
 </head>
@@ -85,10 +82,10 @@
 
     <div class="btn-container" id="buttons"></div>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
     <script>
-        // তোর সেই চেনা লোকাল আইপিটিভি সার্ভারের লিঙ্কগুলোই ফেরত আনা হলো
         const channels = [
             { name: "WC1", url: "http://172.19.1.2/63463433/index.m3u8" },
             { name: "WC2", url: "http://172.19.1.2/9865678/index.m3u8" },
@@ -103,7 +100,6 @@
         const video = document.getElementById('player');
         let hls;
         
-        // Plyr Configuration - ব্রাউজারে ফোর্সড অটো-প্লে সচল করার জন্য মিউটেড ট্রু করা হলো
         const player = new Plyr(video, {
             controls: [
                 'play-large', 'play', 'rewind', 'fast-forward', 'progress', 
@@ -152,7 +148,6 @@
                         forced: true,
                         onChange: (e) => updateQuality(e)
                     };
-                    // স্ট্রিম লোড হওয়ামাত্রই প্লে করার কমান্ড
                     player.play().catch(err => console.log("Autoplay blocked:", err));
                 });
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
@@ -172,4 +167,4 @@
         renderButtons();
     </script>
 </body>
-</html>
+    </html>
