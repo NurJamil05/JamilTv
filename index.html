@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JAMIL TV - Premium Live</title>
+    <!-- Plyr CSS -->
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -16,7 +17,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* ফুটারকে সবসময় নিচে ধরে রাখার জন্য */
+            justify-content: space-between;
         }
         
         .main-content {
@@ -59,7 +60,7 @@
         .plyr--video { --plyr-color-main: #3200AC; }
         .plyr__control--overlaid { background: rgba(50, 0, 172, 0.9); color: #02FFF0; }
         
-        /* responsive বাটন গ্রিড */
+        /* Responsive বাটন গ্রিড */
         .btn-container { 
             display: grid;
             grid-template-columns: repeat(2, 1fr); /* মোবাইলে ১ লাইনে ২টা বাটন */
@@ -84,7 +85,7 @@
             border-radius: 8px; 
             cursor: pointer; 
             transition: all 0.3s ease; 
-            text-transform: uppercase; /* সব লেখা অটো বড় হাতের হবে */
+            text-transform: uppercase; 
         }
         .btn:hover { 
             background: #3200AC; 
@@ -96,7 +97,7 @@
             box-shadow: 0 0 20px rgba(50, 0, 172, 0.6); 
         }
 
-        /* তোর দেওয়া প্রিমিয়াম ফুটার স্টাইল */
+        /* ফুটার স্টাইল */
         footer {
             font-size: 0.9rem;
             font-weight: bold;
@@ -111,6 +112,7 @@
 <body>
 
     <div class="main-content">
+        <!-- লোগো -->
         <div class="logo-container">
             <img src="https://static.vecteezy.com/system/resources/previews/029/933/242/non_2x/live-football-streaming-icon-button-for-broadcasting-or-online-football-stream-illustration-vector.jpg" alt="JAMIL TV Logo" class="logo">
         </div>
@@ -121,21 +123,29 @@
             <video id="player" playsinline controls crossorigin muted autoplay></video>
         </div>
 
+        <!-- ১২টি চ্যানেলের বাটন গ্রিড -->
         <div class="btn-container" id="buttons"></div>
     </div>
 
+    <!-- ফুটার লাইন -->
     <footer>
         Jamil TV 2026 | ALL RIGHT RESERVED
     </footer>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
     <script>
+        // এখানে তোর নতুন ৪টি লিঙ্ক (WC5-WC8) সহ সব চ্যানেল সাজানো আছে
         const channels = [
             { name: "WC1", url: "http://172.19.1.2/63463433/index.m3u8" },
             { name: "WC2", url: "http://172.19.1.2/9865678/index.m3u8" },
             { name: "WC3", url: "http://172.19.1.2/9346574/index.m3u8" },
             { name: "WC4", url: "http://172.19.1.2/9090801/index.m3u8" },
+            { name: "WC5", url: "http://172.19.0.18:5000/stream/79/playlist.m3u8" },
+            { name: "WC6", url: "http://172.19.0.18:5000/stream/9182736450293/playlist.m3u8" },
+            { name: "WC7", url: "http://172.19.0.18:5000/stream/3748291029384/playlist.m3u8" },
+            { name: "WC8", url: "http://172.19.0.18:5000/stream/1/playlist.m3u8" },
             { name: "BTV", url: "http://10.200.200.2:8088/217/video.m3u8?token=apnnactg" },
             { name: "SOMOY TV", url: "http://10.200.200.2:8088/205/video.m3u8?token=apnnactg" },
             { name: "T SPORTS", url: "http://10.200.200.2:8088/102/video.m3u8?token=apnnactg" },
