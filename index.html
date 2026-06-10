@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JAMIL TV - Premium Live</title>
+    <!-- Plyr CSS -->
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -80,6 +81,7 @@
 <body>
 
     <div class="main-content">
+        <!-- লোগো -->
         <div class="logo-container">
             <img src="https://static.vecteezy.com/system/resources/previews/029/933/242/non_2x/live-football-streaming-icon-button-for-broadcasting-or-online-football-stream-illustration-vector.jpg" alt="JAMIL TV Logo" class="logo">
         </div>
@@ -90,61 +92,75 @@
             <video id="player" playsinline controls crossorigin muted autoplay></video>
         </div>
 
+        <!-- ৬টি ক্যাটাগরি ফিল্টার বাটনসমূহ -->
         <div class="category-container">
             <button class="cat-btn active" onclick="filterCategory(1)">Category 1</button>
             <button class="cat-btn" onclick="filterCategory(2)">Category 2</button>
             <button class="cat-btn" onclick="filterCategory(3)">Category 3</button>
             <button class="cat-btn" onclick="filterCategory(4)">Category 4</button>
             <button class="cat-btn" onclick="filterCategory(5)">Category 5</button>
+            <button class="cat-btn" onclick="filterCategory(6)">Category 6</button>
         </div>
 
+        <!-- চ্যানল বাটন গ্রিড -->
         <div class="btn-container" id="buttons"></div>
     </div>
 
+    <!-- ফুটার লাইন -->
     <footer>
         Jamil TV 2026 | ALL RIGHT RESERVED
     </footer>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
     <script>
-        // ক্যাটাগরি আইডি সহ সব চ্যানেল ডেটা
+        // সিরিয়াল অনুযায়ী WC1 থেকে WC33 পর্যন্ত সব চ্যানেল ডেটা
         const channels = [
-            // Category 1
-            { name: "BTV", url: "http://10.200.200.2:8088/217/video.m3u8?token=apnnactg", category: 1 },
-            { name: "SOMOY TV", url: "http://10.200.200.2:8088/205/video.m3u8?token=apnnactg", category: 1 },
-            { name: "T SPORTS", url: "http://10.200.200.2:8088/102/video.m3u8?token=apnnactg", category: 1 },
-            { name: "PTV SPORTS", url: "http://10.200.200.2:8088/125/video.m3u8?token=apnnactg", category: 1 },
+            // Category 1 (নতুন লিঙ্কসমূহ)
+            { name: "WC1", url: "http://172.20.3.1:3255/TSportsHD/index.m3u8", category: 1 },
+            { name: "WC2", url: "http://172.20.3.1:3255/tsp2rc/index.m3u8", category: 1 },
+            { name: "WC3", url: "http://172.20.3.1:3255/tspnk3/index.m3u8", category: 1 },
+            { name: "WC4", url: "http://172.20.3.1:3255/somyyt/index.m3u8", category: 1 },
+            { name: "WC5", url: "http://172.20.3.1:3255/btv_sf/index.m3u8", category: 1 },
+            { name: "WC6", url: "http://172.20.3.1:3255/ptv/index.m3u8", category: 1 },
+            { name: "WC7", url: "http://172.20.3.1:3255/ZEE-CAFE-HD/index.m3u8", category: 1 },
             
             // Category 2
-            { name: "WC1", url: "http://172.19.1.2/63463433/index.m3u8", category: 2 },
-            { name: "WC2", url: "http://172.19.1.2/9865678/index.m3u8", category: 2 },
-            { name: "WC3", url: "http://172.19.1.2/9346574/index.m3u8", category: 2 },
-            { name: "WC4", url: "http://172.19.1.2/9090801/index.m3u8", category: 2 },
-            { name: "WC5", url: "http://172.19.0.18:5000/stream/79/playlist.m3u8", category: 2 },
-            { name: "WC6", url: "http://172.19.0.18:5000/stream/9182736450293/playlist.m3u8", category: 2 },
-            { name: "WC7", url: "http://172.19.0.18:5000/stream/3748291029384/playlist.m3u8", category: 2 },
-            { name: "WC8", url: "http://172.19.0.18:5000/stream/1/playlist.m3u8", category: 2 },
-            { name: "WC9", url: "http://172.19.0.18:5000/stream/7364510293855/playlist.m3u8", category: 2 },
-            { name: "WC10", url: "http://172.19.0.18:5000/stream/37/playlist.m3u8", category: 2 },
-            { name: "WC11", url: "http://172.19.0.18:5000/stream/4829103847562/playlist.m3u8", category: 2 },
-            { name: "WC12", url: "http://172.19.0.18:5000/stream/5019283746510/playlist.m3u8", category: 2 },
+            { name: "WC8", url: "http://172.19.1.2/63463433/index.m3u8", category: 2 },
+            { name: "WC9", url: "http://172.19.1.2/9865678/index.m3u8", category: 2 },
+            { name: "WC10", url: "http://172.19.1.2/9346574/index.m3u8", category: 2 },
+            { name: "WC11", url: "http://172.19.1.2/9090801/index.m3u8", category: 2 },
+            { name: "WC12", url: "http://172.19.0.18:5000/stream/79/playlist.m3u8", category: 2 },
+            { name: "WC13", url: "http://172.19.0.18:5000/stream/9182736450293/playlist.m3u8", category: 2 },
+            { name: "WC14", url: "http://172.19.0.18:5000/stream/3748291029384/playlist.m3u8", category: 2 },
+            { name: "WC15", url: "http://172.19.0.18:5000/stream/1/playlist.m3u8", category: 2 },
+            { name: "WC16", url: "http://172.19.0.18:5000/stream/7364510293855/playlist.m3u8", category: 2 },
+            { name: "WC17", url: "http://172.19.0.18:5000/stream/37/playlist.m3u8", category: 2 },
+            { name: "WC18", url: "http://172.19.0.18:5000/stream/4829103847562/playlist.m3u8", category: 2 },
+            { name: "WC19", url: "http://172.19.0.18:5000/stream/5019283746510/playlist.m3u8", category: 2 },
             
             // Category 3
-            { name: "Live", url: "http://103.158.133.62:8080/live/index.m3u8", category: 3 },
-            { name: "T Sports", url: "http://103.158.133.62:8080/tsports/index.m3u8", category: 3 },
-            { name: "PTV Sports", url: "http://103.158.133.62:8080/ptv/index.m3u8", category: 3 },
-            { name: "BTV HD", url: "http://103.158.133.62:8080/btv/index.m3u8", category: 3 },
-            { name: "Somoy TV", url: "http://103.158.133.62:8080/somoytv/index.m3u8", category: 3 },
+            { name: "WC20", url: "http://103.158.133.62:8080/live/index.m3u8", category: 3 },
+            { name: "WC21", url: "http://103.158.133.62:8080/tsports/index.m3u8", category: 3 },
+            { name: "WC22", url: "http://103.158.133.62:8080/ptv/index.m3u8", category: 3 },
+            { name: "WC23", url: "http://103.158.133.62:8080/btv/index.m3u8", category: 3 },
+            { name: "WC24", url: "http://103.158.133.62:8080/somoytv/index.m3u8", category: 3 },
 
             // Category 4
-            { name: "Somoy TV", url: "http://172.20.21.22/live/skyfeed1004/index.m3u8", category: 4 },
-            { name: "T Sports", url: "http://172.20.21.22/live/skyfeed1005/index.m3u8", category: 4 },
+            { name: "WC25", url: "http://172.20.21.22/live/skyfeed1004/index.m3u8", category: 4 },
+            { name: "WC26", url: "http://172.20.21.22/live/skyfeed1005/index.m3u8", category: 4 },
 
-            // Category 5 (নতুন লিঙ্কসমূহ)
-            { name: "T Sports HD", url: "http://172.16.29.138:8090/hls/tsportshd.m3u8", category: 5 },
-            { name: "PTV Sports HD", url: "http://172.16.29.138:8090/hls/ptvsportshd.m3u8", category: 5 },
-            { name: "Somoy TV HD", url: "http://172.16.29.138:8090/hls/somoytv.m3u8", category: 5 }
+            // Category 5
+            { name: "WC27", url: "http://172.16.29.138:8090/hls/tsportshd.m3u8", category: 5 },
+            { name: "WC28", url: "http://172.16.29.138:8090/hls/ptvsportshd.m3u8", category: 5 },
+            { name: "WC29", url: "http://172.16.29.138:8090/hls/somoytv.m3u8", category: 5 },
+
+            // Category 6 (Category 1 থেকে ট্রান্সফার হওয়া ওল্ড চ্যানেল)
+            { name: "WC30", url: "http://10.200.200.2:8088/217/video.m3u8?token=apnnactg", category: 6 },
+            { name: "WC31", url: "http://10.200.200.2:8088/205/video.m3u8?token=apnnactg", category: 6 },
+            { name: "WC32", url: "http://10.200.200.2:8088/102/video.m3u8?token=apnnactg", category: 6 },
+            { name: "WC33", url: "http://10.200.200.2:8088/125/video.m3u8?token=apnnactg", category: 6 }
         ];
 
         const video = document.getElementById('player');
@@ -200,7 +216,7 @@
             }
         }
 
-        // শুরুতে Category 1 লোড হবে
+        // শুরুতে Category 1 এর প্রথম চ্যানেল (WC1) অটো-প্লে হবে
         currentActiveUrl = channels[0].url;
         playStream(currentActiveUrl);
         filterCategory(1);
